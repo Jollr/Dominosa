@@ -6,5 +6,5 @@ let main argv =
     for test in SolutionTests.Tests do
         test ()
         
-    Console.ReadLine() |> ignore
+    // Console.ReadLine() |> ignore
     0 
