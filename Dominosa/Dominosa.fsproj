@@ -45,6 +45,9 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assert.fs" />
+    <Compile Include="Solution.fs" />
+    <Compile Include="SolutionTests.fs" />
     <Compile Include="Dominosa.fs" />
     <None Include="App.config" />
   </ItemGroup>
