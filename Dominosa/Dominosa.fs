@@ -3,8 +3,6 @@ open SolutionTests
 
 [<EntryPoint>]
 let main argv = 
-    for test in SolutionTests.Tests do
-        test ()
-        
-    // Console.ReadLine() |> ignore
+    (SolutionTests.TestRun ()).Run ()
+    
     0 

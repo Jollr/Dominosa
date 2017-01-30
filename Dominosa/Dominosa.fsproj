@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assert.fs" />
+    <Compile Include="TestRun.fs" />    
     <Compile Include="Solutions.fs" />
     <Compile Include="SolutionTests.fs" />
     <Compile Include="Dominosa.fs" />

@@ -2,35 +2,30 @@ module SolutionTests
 
 open Assert
 open Solutions
+open TestRun
 
-let private testCase (name: string) (s: Solution) isCorrect =
+let private testCase isCorrect grid cover name =
+    let solution = { 
+        Grid = { Values = grid }
+        Cover = cover
+    }
     let testFunc = if isCorrect then Assert.IsTrue else Assert.IsFalse
-    testFunc (s.IsCorrect) (Printf.TextWriterFormat<unit> name)
+    testFunc (solution.IsCorrect) name
 
-let private correct name solution = testCase name solution true
-let private incorrect name solution = testCase name solution false
+let private correct = testCase true
+let private incorrect = testCase false
+
 let private dir d x y = { X=x; Y=y; Direction=d }
 let private down x y = dir DOWN x y
 let private right x y =  dir RIGHT x y
 let private left x y =  dir LEFT x y
 let private up x y =  dir UP x y
-let private emptyGrid () = 
-    let solution = { Grid = { Values = array2D [ ] }; Cover = Array.empty } 
-    correct "empty grid" solution 
+let private emptyGrid () = correct (array2D [ ]) Array.empty "empty grid" 
 let private emptyGridWithDomino () = 
-    let solution = { 
-        Grid = { Values = array2D [ ] }
-        Cover = [| down 0 0 |]
-    }
-    incorrect "empty grid with domino from (0, 0) down" solution
+    incorrect (array2D [ ]) [| down 0 0 |] "empty grid with domino from (0, 0) down"
 
-let private testGrid = { Values = array2D [[0; 1]; [0; 1]; [0; 1]]; }
-let private testGridWithCover (test : string -> Solution -> unit) name cover  =
-    let solution = { 
-        Grid = testGrid
-        Cover = cover
-    }
-    test name solution
+let private testGrid = array2D [[0; 1]; [0; 1]; [0; 1]]; 
+let private testGridWithCover tc name cover = tc testGrid cover name
 let private dominoOffGrid d1 d2 dtest () = 
     let name = "domino off grid " + (string dtest.X) + " " + (string dtest.Y)
     testGridWithCover incorrect name [| d1; d2; dtest |] 
@@ -50,15 +45,9 @@ let private simplestActualSolution () =
 let private wrongSolution () = 
     testGridWithCover incorrect "wrong solution" [| (down 0 0); (down 1 0); (down 2 0); |]
 
-let private largerGrid = { Values = array2D [[2;2;0;2;0]; [3;3;0;3;1]; [1;2;4;3;1]; [3;4;2;4;4]; [3;0;2;1;0]; [1;0;4;1;4]]};
+let private largerGrid = array2D [[2;2;0;2;0]; [3;3;0;3;1]; [1;2;4;3;1]; [3;4;2;4;4]; [3;0;2;1;0]; [1;0;4;1;4]]
 
-let private testLargerGrid (test : string -> Solution -> unit) name cover  =
-    let solution = { 
-        Grid = largerGrid
-        Cover = cover
-    }
-    test name solution
-
+let private testLargerGrid tc name cover = tc largerGrid cover name
 let private largerGridSolution = [| (down 0 0); (right 1 0); (right 1 1); (down 3 0); (down 4 0); (down 5 0); (right 0 2); (right 2 2); (down 4 2); (down 5 2); (down 0 3); (right 1 3); (right 1 4); (down 3 3); (right 4 4) |]
 let private solveLargerGrid () = testLargerGrid correct "solve larger grid" largerGridSolution
 let private errorInSolvingLargerGrid () = 
@@ -66,19 +55,21 @@ let private errorInSolvingLargerGrid () =
 let private errorInSolvingLargerGrid2 () = 
     testLargerGrid incorrect "errorInSolvingLargerGrid2" [| (down 0 0); (right 1 0); (right 1 1); (down 3 0); (down 4 0); (down 5 0); (right 0 2); (right 2 2); (right 4 2); (right 4 3); (down 0 3); (right 1 3); (right 1 4); (down 3 3); (right 4 4) |]
 
-let Tests = [
-    emptyGrid; 
-    emptyGridWithDomino; 
-    dominoOffGridUp;
-    dominoOffGridRight;
-    dominoOffGridDown;
-    dominoOffGridLeft;
-    singleDominoInGrid;
-    singleOverlappingDomino;
-    overlappingDominoes;
-    simplestActualSolution;
-    wrongSolution;
-    solveLargerGrid;
-    errorInSolvingLargerGrid;
-    errorInSolvingLargerGrid2;
-]
+let TestRun () = 
+    let tests = [
+        emptyGrid; 
+        emptyGridWithDomino; 
+        dominoOffGridUp;
+        dominoOffGridRight;
+        dominoOffGridDown;
+        dominoOffGridLeft;
+        singleDominoInGrid;
+        singleOverlappingDomino;
+        overlappingDominoes;
+        simplestActualSolution;
+        wrongSolution;
+        solveLargerGrid;
+        errorInSolvingLargerGrid;
+        errorInSolvingLargerGrid2;
+    ]
+    { Tests = tests; Name = "Solution tests" }
