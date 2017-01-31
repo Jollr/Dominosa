@@ -43,9 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assert.fs" />
-    <Compile Include="TestRun.fs" />    
+    <Compile Include="TestRun.fs" />
     <Compile Include="Solutions.fs" />
     <Compile Include="SolutionTests.fs" />
+    <Compile Include="FileReader.fs" />
+    <Compile Include="FileReaderTests.fs" />
     <Compile Include="Dominosa.fs" />
     <None Include="App.config" />
   </ItemGroup>
@@ -63,4 +65,7 @@
     </Otherwise>
   </Choose>
   <Import Project="$(FSharpTargetsPath)" Condition="Exists('$(FSharpTargetsPath)')" />
+  <Target Name="BeforeBuild">
+    <Copy SourceFiles="testfile.txt" DestinationFolder="$(OutputPath)" ContinueOnError="false" />
+  </Target>
 </Project>

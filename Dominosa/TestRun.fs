@@ -20,5 +20,3 @@ type TestRun = { Tests: (unit -> TestResult) list; Name: string } with
         for test in this.Tests do
             printTestResult (test ())
         Console.WriteLine ()
-
-    

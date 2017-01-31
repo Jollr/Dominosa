@@ -21,6 +21,12 @@ Target "Clean" (fun _ ->
     CleanDirs [buildDir; deployDir]
 )
 
+// Target "BeforeBuild" (fun _ ->
+//     CleanDirs [buildDir; deployDir]
+// )
+//     <Copy SourceFiles="testfile.txt" DestinationFolder="$(OutputPath)" ContinueOnError="false" />
+//   </Target>
+
 Target "Build" (fun _ ->
     // compile all projects below src/app/
     MSBuildDebug buildDir "Build" appReferences

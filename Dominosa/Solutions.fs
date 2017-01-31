@@ -45,9 +45,11 @@ type Solution = { Grid: Grid; Cover: Domino[]; } with
         let allUnique seq = seq |> Seq.distinct |> Seq.length |> fun l -> l = (Seq.length seq)
         let allPointsAreUnique () : bool = allUnique points
         let allDominoesAreUnique () : bool = 
+            let getCoveringValues = (fun (d: Domino) -> d.GetCoveringValues this.Grid)
+            let getHashString = (fun x -> "(" + (string (Seq.head x)) + ", " + (string (Seq.last x)) + ")" )
+
             this.Cover
-            |> Seq.map (fun d -> d.GetCoveringValues this.Grid)
-            |> Seq.map (fun x -> "(" + (string (Seq.head x)) + ", " + (string (Seq.last x)) + ")" )
+            |> Seq.map (getCoveringValues >> getHashString)
             |> allUnique
 
         // // let temp = 
