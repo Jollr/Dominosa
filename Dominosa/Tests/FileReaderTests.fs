@@ -15,9 +15,7 @@ let private readFileContents () =
         let message = lines |> String.concat ", "
         let isCorrect = (message = "testfile 1, testfile 2, testfile 3")
 
-        if isCorrect
-        then Assert.Pass message
-        else Assert.Fail message
+        Assert.IsTrue isCorrect message
 
     result contents
 
