@@ -1,15 +1,10 @@
 module Solutions
 
 open System;
+open Grid;
 
 type Point = { X: int; Y:int } with 
     override this.ToString () = "(" + (string this.X) + ", " + (string this.Y) + ")"
-
-type Grid = { Values: int[,] } with
-    member this.Size : int = (Array2D.length1 this.Values) * (Array2D.length2 this.Values);
-    member this.MaxX : int = (Array2D.length1 this.Values) - 1;
-    member this.MaxY : int = (Array2D.length2 this.Values) - 1;
-    member this.GetValue x y : int = this.Values.[x, y]
 
 type Direction = LEFT | RIGHT | UP | DOWN
 type Domino = { X: int; Y: int; Direction: Direction } with

@@ -42,10 +42,15 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Grid.fs" />
+    <Compile Include="Graph.fs" />
     <Compile Include="Solutions.fs" />
     <Compile Include="FileReader.fs" />
+    <Compile Include="FordFulkerson.fs" />
     <Compile Include="Tests\Assert.fs" />
     <Compile Include="Tests\TestRun.fs" />
+    <Compile Include="Tests\ProblemConverterTests.fs" />
+    <Compile Include="Tests\FordFulkersonTests.fs" />
     <Compile Include="Tests\SolutionTests.fs" />
     <Compile Include="Tests\FileReaderTests.fs" />
     <Compile Include="Tests\Tests.fs" />

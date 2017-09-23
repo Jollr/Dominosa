@@ -1,8 +1,8 @@
 module SolutionTests
 
 open Assert
-open Solutions
 open TestRun
+open Solutions
 
 let private testCase isCorrect grid cover name =
     let solution = { 
