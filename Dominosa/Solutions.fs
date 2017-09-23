@@ -3,7 +3,7 @@ module Solutions
 open System;
 
 type Point = { X: int; Y:int } with 
-    member this.ToString () = "(" + (string this.X) + ", " + (string this.Y) + ")"
+    override this.ToString () = "(" + (string this.X) + ", " + (string this.Y) + ")"
 
 type Grid = { Values: int[,] } with
     member this.Size : int = (Array2D.length1 this.Values) * (Array2D.length2 this.Values);

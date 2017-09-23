@@ -42,13 +42,13 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assert.fs" />
-    <Compile Include="TestRun.fs" />
     <Compile Include="Solutions.fs" />
-    <Compile Include="SolutionTests.fs" />
     <Compile Include="FileReader.fs" />
-    <Compile Include="FileReaderTests.fs" />
-    <Compile Include="Dominosa.fs" />
+    <Compile Include="Tests\Assert.fs" />
+    <Compile Include="Tests\TestRun.fs" />
+    <Compile Include="Tests\SolutionTests.fs" />
+    <Compile Include="Tests\FileReaderTests.fs" />
+    <Compile Include="Tests\Tests.fs" />
     <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -66,6 +66,6 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" Condition="Exists('$(FSharpTargetsPath)')" />
   <Target Name="BeforeBuild">
-    <Copy SourceFiles="testfile.txt" DestinationFolder="$(OutputPath)" ContinueOnError="false" />
+    <Copy SourceFiles="Tests\testfile.txt" DestinationFolder="$(OutputPath)" ContinueOnError="false" />
   </Target>
 </Project>
