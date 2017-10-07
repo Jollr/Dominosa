@@ -4,6 +4,6 @@ open System
 let main argv = 
     (SolutionTests.TestRun ()).Run ()
     (FileReaderTests.TestRun ()).Run ()
-    (ProblemConverterTests.TestRun ()).Run ()
     (FordFulkersonTests.TestRun ()).Run ()
+    (DominosaTests.TestRun ()).Run ()
     0 

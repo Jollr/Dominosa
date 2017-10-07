@@ -3,6 +3,7 @@ module FileReaderTests
 open Assert
 open TestRun
 open FileReader
+
 let private openNonExistingFile () = 
     if Seq.isEmpty (FileReader.ReadFile "no.txt")
     then Assert.Pass "cannot find non-existing file"

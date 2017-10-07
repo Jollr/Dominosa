@@ -31,24 +31,4 @@ type Graph = { Vertices: Grid } with
     member this.AddEdge x y capacity : Graph = 
         { Vertices = this.Vertices.SetValue x y capacity }
 
-    override this.ToString () = 
-        let indices = [0 .. (this.NumVertices - 1)];
-        let renderDigit (n : int) : string = 
-            let asString = n.ToString ();
-        
-            if (asString.Length = 1)
-            then asString + "  ";
-            elif (asString.Length = 2)
-            then asString + " ";
-            else asString
-
-        let renderRow (n : int) : string =
-            let getValue i : int  = this.Vertices.GetValue n i
-            let values : seq<string> = indices |> Seq.map getValue |> Seq.map renderDigit |> Seq.map (fun x -> x.ToString())
-            String.concat " " values
-        
-        let render () = 
-            let rows = Seq.map renderRow indices
-            String.concat "\r\n" rows
-
-        render()
+    override this.ToString () = this.Vertices.ToString ()

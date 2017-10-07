@@ -97,6 +97,6 @@ let TestRun () =
        fourNodeConnectedFlowValue;
        fourNodeConnectedFlowGraph;
        integrationTest;
-       sandbox;
+    //    sandbox;
     ]
     { Tests = tests; Name = "Ford fulkerson implementation tests" }
