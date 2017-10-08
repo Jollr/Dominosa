@@ -55,6 +55,13 @@ let private errorInSolvingLargerGrid () =
 let private errorInSolvingLargerGrid2 () = 
     testLargerGrid incorrect "errorInSolvingLargerGrid2" [| (down 0 0); (right 1 0); (right 1 1); (down 3 0); (down 4 0); (down 5 0); (right 0 2); (right 2 2); (right 4 2); (right 4 3); (down 0 3); (right 1 3); (right 1 4); (down 3 3); (right 4 4) |]
 
+let private toString () =
+    let solution : Solution = { 
+        Grid = { Values = largerGrid }
+        Cover = largerGridSolution
+    }
+    Assert.Pass (System.Environment.NewLine + solution.ToString())
+
 let TestRun () = 
     let tests = [
         emptyGrid; 
@@ -71,5 +78,6 @@ let TestRun () =
         solveLargerGrid;
         errorInSolvingLargerGrid;
         errorInSolvingLargerGrid2;
+        toString;
     ]
     { Tests = tests; Name = "Solution tests" }

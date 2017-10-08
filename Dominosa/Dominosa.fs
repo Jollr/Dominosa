@@ -6,6 +6,7 @@ open Graph
 type private NumNodes = { DominoNodes : int; ConnectionNodes : int; NumberNodes : int }
 
 type Puzzle = { Numbers : Grid; HighestDomino : int } with
+
     member this.AsMaxFlowProblem () : Graph =
         let num : NumNodes = {
             DominoNodes = (this.HighestDomino + 1) * (this.HighestDomino + 2) / 2;
@@ -85,3 +86,23 @@ type Puzzle = { Numbers : Grid; HighestDomino : int } with
         for x in [lower .. upper] do
             grid.MutateValue x grid.MaxY 1
         grid
+
+// let mutable row : list<string> = [ ]
+// row <- (List.append row ["test"])
+// row <- (List.append row ["test"])
+
+type SolutionRenderer = { Original : Puzzle; MaxFlow : Graph } with
+    member this.Render () : string =
+        let rowNumbers = [0 .. this.Original.Numbers.MaxX]
+        let renderedRows = Seq.map this.RenderRow rowNumbers
+        this.Concatenate renderedRows
+
+    member private this.RenderRow n : string =
+        let numbers = Seq.map (this.RenderNumber n) [0 .. this.Original.Numbers.MaxY]
+        (this.Concatenate numbers) + System.Environment.NewLine
+
+    member private this.RenderNumber x y : string =
+        let number = this.Original.Numbers.GetValue x y
+        " " + (number.ToString ()) + " "
+
+    member private this.Concatenate strings : string = Seq.fold (+) "" strings
