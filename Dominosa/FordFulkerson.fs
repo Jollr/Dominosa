@@ -12,17 +12,12 @@ type FordFulkerson = { Graph : Graph } with
         then 0
         else Seq.reduce (+) lastColumn
 
-    member this.MaxFlowValue : int = this.LastColumnTotal this.MaxFlowGraph
-    member this.MaxFlowGraph : Graph = 
+    member this.MaxFlowValue () : int = this.LastColumnTotal (this.MaxFlowGraph ())
+    member this.MaxFlowGraph () : Graph = 
         let emptyGraph = { Vertices = Grid.Empty this.Graph.NumVertices this.Graph.NumVertices }
         this.MaxFlowGraphRecursive this.Graph emptyGraph
 
     member private this.MaxFlowGraphRecursive (capacities: Graph) (flow: Graph) : Graph =
-        // do (System.Console.WriteLine "MAX FLOW GRAPH RECURSIVE")
-        // do (System.Console.WriteLine "capacities")
-        // do (System.Console.WriteLine capacities)
-        // do (System.Console.WriteLine "flow")
-        // do (System.Console.WriteLine flow)
         let mst : Graph = capacities.MinimumSpanningTree
         if ((this.LastColumnTotal mst) = 0)
         then this.MaxFlowGraphRecursiveResult flow

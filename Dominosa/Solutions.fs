@@ -85,7 +85,7 @@ type Solution = { Grid: Grid; Cover: Domino[]; } with
         else connectionChar + this.divider
 
     member private this.RenderDashesLine () : string = 
-        let length = this.Grid.XLength * 2 - 1
+        let length = this.Grid.YLength * 2 + 1
         [0 .. length - 1] |>
         Seq.map (fun _ -> "-") |>
         this.Concatenate |>

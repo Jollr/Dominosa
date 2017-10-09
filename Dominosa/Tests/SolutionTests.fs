@@ -78,6 +78,6 @@ let TestRun () =
         solveLargerGrid;
         errorInSolvingLargerGrid;
         errorInSolvingLargerGrid2;
-        toString;
+        // toString;
     ]
     { Tests = tests; Name = "Solution tests" }

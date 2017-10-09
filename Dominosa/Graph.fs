@@ -5,7 +5,7 @@ open Grid;
 type Graph = { Vertices: Grid } with
     member this.NumVertices : int = this.Vertices.MaxX + 1;
     member this.GetCapacity x y = this.Vertices.GetValue x y
-    member this.MinimumSpanningTree : Graph = this.MinimumSpanningTreeRecursive { Values = Array2D.init this.NumVertices this.NumVertices (fun a b -> 0) } [0]
+    member this.MinimumSpanningTree : Graph = this.MinimumSpanningTreeRecursive (Grid.Empty this.NumVertices this.NumVertices) [0]
     member private this.MinimumSpanningTreeRecursive (current : Grid) (visited : list<int>) : Graph = 
         if (visited.Length = this.NumVertices)
         then { Vertices = current }
@@ -19,14 +19,9 @@ type Graph = { Vertices: Grid } with
             else 
                 let (winningCandidateX, winningCandidateY) : int*int = Seq.head candidates
                 let winningValue = this.Vertices.GetValue winningCandidateX winningCandidateY 
-                do Array2D.set current.Values winningCandidateX winningCandidateY winningValue
+                current.MutateValue winningCandidateX winningCandidateY winningValue
                 let newVisited = List.append visited [winningCandidateY]
                 this.MinimumSpanningTreeRecursive current newVisited
-
-    member this.Subtract (other: Graph) = 
-        let subtractEdge x y = (this.Vertices.GetValue x y) - (other.Vertices.GetValue x y)
-        let grid = Grid.Create this.NumVertices this.NumVertices subtractEdge
-        { Vertices = grid }
 
     member this.AddEdge x y capacity : Graph = 
         { Vertices = this.Vertices.SetValue x y capacity }

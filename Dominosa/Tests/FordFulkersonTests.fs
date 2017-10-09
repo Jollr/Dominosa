@@ -10,21 +10,23 @@ let private makeGraph vertices : Graph = { Vertices = { Values = vertices } }
 let private testMaxFlowValue testName vertices expected = 
     let graph = makeGraph vertices
     let ff = { Graph = graph };
-    let failMessage = testName + ": expected max flow value of " + expected.ToString() + ", but was " + ff.MaxFlowValue.ToString()
-    Assert.AreEqual expected ff.MaxFlowValue testName (failMessage + "\r\n" + graph.ToString())
+    let maxFlowValue = ff.MaxFlowValue ()
+    let failMessage = testName + ": expected max flow value of " + expected.ToString() + ", but was " + maxFlowValue.ToString()
+    Assert.AreEqual expected maxFlowValue testName (failMessage + "\r\n" + graph.ToString())
 
 let private testMaxFlowGraph testName vertices expected = 
     let graph = makeGraph vertices 
     let expectedGraphResult = makeGraph expected
     let ff = { Graph = graph };
-    let failMessage = testName + ": expected max flow graph of \r\n" + expectedGraphResult.ToString() + "\r\nbut was \r\n" + ff.MaxFlowGraph.ToString()
-    Assert.AreEqual expectedGraphResult ff.MaxFlowGraph testName failMessage
+    let maxFlowGraph = ff.MaxFlowGraph ()
+    let failMessage = testName + ": expected max flow graph of \r\n" + expectedGraphResult.ToString() + "\r\nbut was \r\n" + maxFlowGraph.ToString()
+    Assert.AreEqual expectedGraphResult maxFlowGraph testName failMessage
 
 let emptyGraph () = 
     let grid = { Values = array2D [ ] }
     let emptyGraph = { Vertices = grid }
     let ff = { Graph = emptyGraph };
-    Assert.IsTrue (ff.MaxFlowValue = 0) "empty graph should have 0 flow"
+    Assert.IsTrue ((ff.MaxFlowValue ()) = 0) "empty graph should have 0 flow"
 let singleEdgeFlowValue n () =
     let vertices = array2D [ [0;n]; [0;0] ]
     let testName = "singleEdgeFlowValue" + n.ToString()
@@ -71,7 +73,7 @@ let sandbox () =
     do (System.Console.WriteLine "graph")
     do (System.Console.WriteLine graph)
     let fordFulkerson = { Graph = graph }
-    let maxFlowGraph: Graph = fordFulkerson.MaxFlowGraph
+    let maxFlowGraph: Graph = fordFulkerson.MaxFlowGraph ()
     do (System.Console.WriteLine "max flow graph")
     Assert.Pass (maxFlowGraph.ToString())
 
