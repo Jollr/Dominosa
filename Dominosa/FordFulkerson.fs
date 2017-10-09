@@ -15,13 +15,16 @@ type FordFulkerson = { Graph : Graph } with
     member this.MaxFlowValue () : int = this.LastColumnTotal (this.MaxFlowGraph ())
     member this.MaxFlowGraph () : Graph = 
         let emptyGraph = { Vertices = Grid.Empty this.Graph.NumVertices this.Graph.NumVertices }
-        this.MaxFlowGraphRecursive this.Graph emptyGraph
+        this.MaxFlowGraphRecursive this.Graph emptyGraph 0
 
-    member private this.MaxFlowGraphRecursive (capacities: Graph) (flow: Graph) : Graph =
+    member private this.MaxFlowGraphRecursive (capacities: Graph) (flow: Graph) counter : Graph =
+        do (Console.WriteLine counter)
+        do (Console.WriteLine "pre mst")  
         let mst : Graph = capacities.MinimumSpanningTree
+        do (Console.WriteLine "post mst")  
         if ((this.LastColumnTotal mst) = 0)
         then this.MaxFlowGraphRecursiveResult flow
-        else this.MaxFlowGraphRecursiveMst capacities flow mst
+        else this.MaxFlowGraphRecursiveMst capacities flow mst counter
 
     member private this.MaxFlowGraphRecursiveResult (flow: Graph) : Graph =
         let getResultValue x y = 
@@ -33,11 +36,15 @@ type FordFulkerson = { Graph : Graph } with
         let resultGrid : Grid = Grid.Create flow.NumVertices flow.NumVertices getResultValue
         { Vertices = resultGrid }
 
-    member private this.MaxFlowGraphRecursiveMst (capacities: Graph) (flow: Graph) (mst: Graph) : Graph = 
-        let winningPath = this.WinningPath mst
+    member private this.MaxFlowGraphRecursiveMst (capacities: Graph) (flow: Graph) (mst: Graph) counter : Graph = 
+        do (Console.WriteLine "MFGRMST1")        
+        let winningPath = this.WinningPath mst   
+        do (Console.WriteLine "MFGRMST2")        
         let adjustedCapacities = this.AdjustCapacities capacities winningPath
+        do (Console.WriteLine "MFGRMST3")        
         let adjustedFlow = this.AdjustFlow flow winningPath
-        this.MaxFlowGraphRecursive adjustedCapacities adjustedFlow
+        do (Console.WriteLine "MFGRMST4")        
+        this.MaxFlowGraphRecursive adjustedCapacities adjustedFlow (counter + 1)
 
     member private this.AdjustCapacities (capacities: Graph) (winningPath: Graph) : Graph =
         let getUpdatedValue x y = 

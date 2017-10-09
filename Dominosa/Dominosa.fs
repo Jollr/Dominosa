@@ -12,11 +12,12 @@ type private Indices = { NumDominoNodes : int; NumConnectionNodes : int; NumNumb
 
     member this.GetDominoIndex d1 d2 max : int =
         let getIndex highest lowest = this.FirstDominoNodeIndex + lowest * (max + 1) - lowest * (lowest - 1) / 2 + max - highest
+
         if (d1 > d2)
         then getIndex d1 d2
         else getIndex d2 d1
 
-    member this.GetConnectionIndex maxX maxY x y firstPass =
+    member this.GetConnectionNodeIndex maxX maxY x y firstPass =
         if firstPass
         then this.FirstConnectionNodeIndex + x * maxX + y
         else this.FirstConnectionNodeIndex + x * (maxX + 1) + y + maxX * (maxY + 1)
@@ -68,7 +69,7 @@ type Puzzle = { Numbers : Grid; HighestDomino : int } with
             else option.None
 
         let getDomino connectionNodeIndex : Domino option =
-            // do (System.Console.WriteLine ("getDomino: " + connectionNodeIndex.ToString()))
+            do (System.Console.WriteLine ("getDomino: " + connectionNodeIndex.ToString()))
 
             let hasCapacity (y : int) : bool = (maxFlowGraph.GetCapacity connectionNodeIndex y) > 0
             let numberNodesWithCapacity : seq<int> = Seq.filter hasCapacity [indices.FirstNumberNodeIndex .. indices.FirstNumberNodeIndex + indices.NumNumberNodes - 1]
@@ -96,13 +97,13 @@ type Puzzle = { Numbers : Grid; HighestDomino : int } with
         let gridSize : int = indices.NumDominoNodes + indices.NumConnectionNodes + indices.NumNumberNodes + 2
         let grid : Grid = Grid.Empty gridSize gridSize
         let resultGrid = grid |> 
-            this.FillSinkToDominoEdges indices |> 
+            this.FillSourceToDominoEdges indices |> 
             this.FillDominoToConnectionEdges indices |> 
             this.FillConnectionToNumberEdges indices |> 
             this.FillNumberToSinkEdges indices 
         { Vertices = resultGrid }
     
-    member private this.FillSinkToDominoEdges (indices : Indices) (grid : Grid) : Grid =
+    member private this.FillSourceToDominoEdges (indices : Indices) (grid : Grid) : Grid =
         for index in [1 .. indices.NumDominoNodes] do
             grid.MutateValue 0 index 2
         grid
@@ -112,7 +113,7 @@ type Puzzle = { Numbers : Grid; HighestDomino : int } with
             let d1 = this.Numbers.GetValue x y
             let d2 = if firstPass then this.Numbers.GetValue (x + 1) y else this.Numbers.GetValue x (y + 1)
             let dominoNodeIndex = indices.GetDominoIndex d1 d2 this.HighestDomino
-            let connectionNodeIndex = indices.GetConnectionIndex this.Numbers.MaxX this.Numbers.MaxY x y firstPass
+            let connectionNodeIndex = indices.GetConnectionNodeIndex this.Numbers.MaxX this.Numbers.MaxY x y firstPass
             grid.MutateValue dominoNodeIndex connectionNodeIndex 2
         
         for x in [0 .. this.Numbers.MaxX - 1] do

@@ -24,14 +24,14 @@ type Grid = { Values: int[,] } with
     override this.ToString () = 
         let xIndices = [ 0 .. this.MaxX ]
         let yIndices = [ 0 .. this.MaxY ]
-        let renderDigit (n : int) : string = 
-            let asString = n.ToString ();
+        let renderDigit (n : int) : string = n.ToString ()
+            // let asString = n.ToString ()
         
-            if (asString.Length = 1)
-            then asString + "  ";
-            elif (asString.Length = 2)
-            then asString + " ";
-            else asString
+            // if (asString.Length = 1)
+            // then asString + "  "
+            // elif (asString.Length = 2)
+            // then asString + " "
+            // else asString
 
         let renderRow (x : int) : string =
             let getValue i : int  = this.GetValue x i
